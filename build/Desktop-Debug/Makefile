@@ -52,8 +52,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../../main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../../imageprocessor.cpp \
+		../../main.cpp 
+OBJECTS       = imageprocessor.o \
+		main.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -141,7 +143,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../../../../ImageCliper.pro  ../../main.cpp
+		../../../../ImageCliper.pro ../../imageprocessor.h ../../imageprocessor.cpp \
+		../../main.cpp
 QMAKE_TARGET  = ImageCliper
 DESTDIR       = 
 TARGET        = ImageCliper
@@ -345,7 +348,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../imageprocessor.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../imageprocessor.cpp ../../main.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -393,7 +397,10 @@ compiler_clean: compiler_moc_predefs_clean
 
 ####### Compile
 
-main.o: ../../main.cpp 
+imageprocessor.o: ../../imageprocessor.cpp ../../imageprocessor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o imageprocessor.o ../../imageprocessor.cpp
+
+main.o: ../../main.cpp ../../imageprocessor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
 ####### Install
